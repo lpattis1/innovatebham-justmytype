@@ -14,6 +14,7 @@ const sentences = [
 const upperCaseKeyboard = $("#keyboard-upper-container");
 const lowerCaseKeyboard = $("#keyboard-lower-container");
 const sentenceContainer = $("#sentence");
+const feedback = $("#feedback");
 
 let sentenceIndex = 0;
 let letterIndex = 0;
@@ -77,26 +78,32 @@ function changeToLowerCase() {
 
 function currentLetterCheck(key, num, keyID) {
   let currentSentence = sentences[sentenceIndex].split("");
-  let checked = currentSentence[letterIndex++].charAt().toLowerCase();
-  //   console.log(letterIndex);
-  //   console.log(key, checked);
-  //   console.log(currentSentence);
-  //   console.log(currentSentence.length);
-  //   console.log(sentenceIndex);
+  let checked = currentSentence[letterIndex++].charAt();
 
-  if (letterIndex === currentSentence.length) {
-    sentenceIndex++;
-    // console.log(sentenceIndex);
-    letterIndex = 0;
-    currentSentence = sentences[sentenceIndex].split("");
-    // console.log(currentSentence);
-    sentenceContainer.text(sentences[sentenceIndex]);
-    // console.log(key, checked);
+  yellowBlock.css({
+    left: "+=17.2px",
+  });
+
+  if (key === checked) {
+    let correct = $(`<i class="fas fa-check correct"></i>`);
+    correct.addClass("green-check");
+    feedback.append(correct);
+  } else {
+    let incorrect = $(`<i class="fas fa-times incorrect"></i>`);
+    incorrect.addClass("red-check");
+    feedback.append(incorrect);
   }
 
-  if (key.toLowerCase() === checked) {
-    console.log("correct");
-  } else {
-    console.log("incorrect");
+  if (letterIndex === currentSentence.length) {
+    feedback.html("");
+    yellowBlock.css({
+      left: "0",
+    });
+    sentenceIndex++;
+
+    letterIndex = 0;
+    currentSentence = sentences[sentenceIndex].split("");
+
+    sentenceContainer.text(sentences[sentenceIndex]);
   }
 }

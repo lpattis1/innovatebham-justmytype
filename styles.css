@@ -46,3 +46,19 @@
 .key-pressed {
   background: #d4d4d4 !important;
 }
+
+.green-check {
+  color: green;
+}
+
+.red-check {
+  color: red;
+}
+
+.correct {
+  margin-right: 0.5rem;
+}
+
+.incorrect {
+  margin-right: 0.5rem;
+}
