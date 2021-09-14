@@ -62,3 +62,12 @@
 .incorrect {
   margin-right: 0.5rem;
 }
+
+.retry-btn {
+  background: green;
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
