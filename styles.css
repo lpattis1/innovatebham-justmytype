@@ -63,6 +63,17 @@
   margin-right: 0.5rem;
 }
 
+.wpm-text {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bolder;
+}
+
+.wpm {
+  font-weight: 400;
+  color: green;
+}
+
 .retry-btn {
   background: green;
   border: none;

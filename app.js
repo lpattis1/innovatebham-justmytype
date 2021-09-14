@@ -15,16 +15,17 @@ const sentences = [
 const upperCaseKeyboard = $("#keyboard-upper-container");
 const lowerCaseKeyboard = $("#keyboard-lower-container");
 const sentenceContainer = $("#sentence");
+
 const feedback = $("#feedback");
 let yellowBlock = $("#yellow-block");
 
 let sentenceIndex = 0;
 let letterIndex = 0;
 let mistakes = 0;
-let timer = 0;
-let timeStart;
-let timeEnd;
-let gameEnd = false;
+
+let timeStart = 1;
+let timeEnd = 0;
+let wordCount = 0;
 
 const typingArea = $("#target-letter");
 
@@ -44,12 +45,8 @@ $(document).ready(function (e) {
 
 function displayTargetedKey(e) {
   $(document).keypress(function (e) {
-    timer++;
+    wordCount++;
 
-    timeStart = e.timeStamp;
-    console.log(timeStart);
-
-    console.log(timer);
     const showTyping = String.fromCharCode(e.keyCode);
     const keyNum = e.which;
     const selectedKey = $(`#${keyNum}`);
@@ -59,7 +56,7 @@ function displayTargetedKey(e) {
     }, 500);
     typingArea.text(showTyping);
 
-    currentLetterCheck(showTyping);
+    currentLetterCheck(showTyping, e);
   });
 }
 
@@ -88,11 +85,9 @@ function changeToLowerCase() {
   });
 }
 
-function currentLetterCheck(key) {
+function currentLetterCheck(key, e) {
   let currentSentence = sentences[sentenceIndex];
   let checked = currentSentence.charAt(letterIndex++);
-  console.log(checked);
-  console.log(key);
 
   yellowBlock.css({
     left: "+=17.2px",
@@ -101,12 +96,12 @@ function currentLetterCheck(key) {
   if (key === checked) {
     let correct = $(`<i class="fas fa-check correct"></i>`);
     correct.addClass("green-check");
-    feedback.append(correct);
+    feedback.prepend(correct);
   } else {
     let incorrect = $(`<i class="fas fa-times incorrect"></i>`);
     mistakes++;
     incorrect.addClass("red-check");
-    feedback.append(incorrect);
+    feedback.prepend(incorrect);
   }
 
   if (letterIndex === currentSentence.length && sentenceIndex !== 4) {
@@ -122,9 +117,25 @@ function currentLetterCheck(key) {
   }
 
   if (letterIndex > currentSentence.length) {
+    timeEnd = e.timeStamp;
+    let timeDifference = timeEnd - timeStart;
+    let seconds = timeDifference / 1000;
+    let minutes = seconds / 60;
+    let wordsPerMinute = (
+      wordCount / minutes.toFixed(1) -
+      2 * mistakes
+    ).toFixed(3);
+
     yellowBlock.css({
       left: "0",
     });
-    feedback.html(`<button class="retry-btn">Retry?</button>`);
+    feedback.html(` 
+    <h3 class="wpm-txt">WPM: <span class="wpm">${wordsPerMinute}</span></h3>
+    <button class="retry-btn">Retry?</button>
+    `);
+
+    $(".retry-btn").click(function (e) {
+      location.reload();
+    });
   }
 }
