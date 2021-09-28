@@ -23,7 +23,7 @@ let sentenceIndex = 0;
 let letterIndex = 0;
 let mistakes = 0;
 
-let timeStart = 1;
+let timeStart = 0;
 let timeEnd = 0;
 let wordCount = 0;
 
